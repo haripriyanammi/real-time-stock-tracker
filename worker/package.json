@@ -1,0 +1,31 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+    "scripts": {
+  "dev": "node --loader ts-node/esm src/index.ts",
+  "test": "echo \"Error: no test specified\" && exit 1"
+    },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "ably": "^2.11.0",
+    "axios": "^1.11.0",
+    "dotenv": "^17.2.1",
+    "mongoose": "^8.18.0",
+    "node-cron": "^4.2.1",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@types/node-cron": "^3.0.11",
+    "@types/node-fetch": "^2.6.13",
+    "cross-env": "^10.0.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.2"
+  }
+}
