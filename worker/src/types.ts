@@ -1,3 +1,5 @@
+//blue print for Alert and AlertHistory documents in MongoDB
+//here interface is used to define the structure of the data
 export interface Alert {
   _id?: string;
   symbol: string;

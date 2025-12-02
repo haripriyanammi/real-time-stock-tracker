@@ -1,4 +1,4 @@
-// worker/src/db.ts
+
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import type { Alert, AlertHistory } from "./types.js";

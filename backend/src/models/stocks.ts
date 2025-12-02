@@ -26,6 +26,13 @@ currentprice:
     required: true
 },
 status: { type: String, default: "pending" },
+  audio_url: 
+  { 
+    type: String, 
+    default: null 
+},  // 👈 add this
+
+
 
 createdAt: 
 {

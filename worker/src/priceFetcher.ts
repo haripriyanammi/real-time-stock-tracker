@@ -1,3 +1,4 @@
+//fetch is a tool thats brings a tool into this file from somewhere else 
 import fetch from "node-fetch";
 
 export async function fetchPrice(symbol: string): Promise<number> {
