@@ -1,10 +1,14 @@
-import type { Request, Response } from "express";
+import type { Request,Response } from "express";
 import mongoose from "mongoose";
-
+//for the data base strorage
 import { getCurrentPrice } from "../services/priceServices.js";
+//to fetch the current stock price
 import Stock from "../models/stocks.js";
+//to save the alert
 import { publishAlert } from "../services/ablyService.js";
+//to send a real time message to frontend
 import { generateVoiceAlert } from "../services/voiceServices.js"; // ✅ Step 1: Import voice service
+//to generate voice
 
 // Simple history model - stores individual price checks for a symbol.
 const AlertHistorySchema = new mongoose.Schema(
@@ -15,6 +19,7 @@ const AlertHistorySchema = new mongoose.Schema(
     targetprice: { type: Number, required: true },
     status: { type: String, enum: ["rise", "fall", "stable"], required: true },
     alertId: { type: mongoose.Schema.Types.ObjectId, required: false }, // reference to saved alert if any
+    //connects history to main alert
   },
   { timestamps: false }
 );
@@ -106,7 +111,7 @@ export const createAlert = async (req: Request, res: Response) => {
       console.error("Voice generation failed:", voiceErr);
     }
 
-    // 7) Prepare payload
+    // 7) Prepare payload whch is sent to frontend
     const payload = {
       id: (newAlert._id as mongoose.Types.ObjectId).toString(),
       stock: symbol,

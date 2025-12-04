@@ -1,4 +1,4 @@
-import mongoose,{Schema,Document} from "mongoose";
+import mongoose,{Schema,Document} from "mongoose";// wiothout this we cannot create a model
 // Define the Stock interface
 export interface IStock extends Document {
     symbol: string;//stock symbol, e.g., "AAPL"
@@ -25,7 +25,9 @@ currentprice:
     type: Number,
     required: true
 },
-status: { type: String, default: "pending" },
+status: { 
+    type: String, 
+    default: "pending" },
   audio_url: 
   { 
     type: String, 

@@ -1,4 +1,4 @@
-import express  from 'express';
+//not basically need it just add stock mannually and get the stocks
 import  type {Request, Response} from 'express';
 import Stock from '../models/stocks.js'; // Assuming you have a Stock model defined
 //add a new stock

@@ -1,3 +1,4 @@
+//this is simply for only testion purpose thats why we connect this route to directly  db
 import express from "express";
 import type { Request, Response } from "express";
 import Stock from "../models/stocks.js"; // Assuming you have a Stock model defined
