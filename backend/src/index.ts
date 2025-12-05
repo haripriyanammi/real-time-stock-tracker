@@ -1,5 +1,5 @@
 import express from "express";
-import cors from "cors";
+import cors from "cors";//for react to call backend
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import Ably from "ably";
@@ -11,7 +11,7 @@ const PORT = process.env.PORT ? Number(process.env.PORT) : 5000;
 const MONGO_URI = process.env.MONGO_URI ?? "mongodb://localhost:27017/stocks";
 const ABLY_KEY = process.env.ABLY_API_KEY ?? "";
 
-const app = express();
+const app = express();//starts the backend
 
 // Middlewares
 app.use(cors());
