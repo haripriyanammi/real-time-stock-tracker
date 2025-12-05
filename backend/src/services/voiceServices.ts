@@ -4,23 +4,46 @@ import fs from "fs";
 import path from "path";
 import { s3 } from "../utils/aws"; // your existing s3 config
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });//chat completion and TTS
 
 export async function generateVoiceAlert(
   rawMessage: string,
   symbol: string
 ): Promise<{ text: string; audioUrl: string }> {
+  
   const speechFile = path.resolve(`./temp_${Date.now()}.mp3`);
   try {
     // 1) Expand text
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: "You are a financial assistant..." },
-        { role: "user", content: `Create an expanded stock alert for: ${rawMessage}, symbol: ${symbol}` },
-      ],
-    });
-    const expandedText = completion.choices?.[0]?.message?.content || rawMessage;
+  model: "gpt-4o-mini",
+  messages: [
+    {
+      role: "system",
+      content: `
+      You are a financial assistant. 
+      When given a stock symbol, current price, target price, and status (rise/fall/stable), 
+      create a friendly and informative voice alert.
+      
+      Your voice message must include:
+      - What the stock is and its current price
+      - The target price the user set
+      - Whether the stock is going up or down
+      - A short guidance: Is it a good time to buy, hold, or wait?
+      - Keep the message short and natural sounding.
+      `
+    },
+    {
+      role: "user",
+      content: `
+      Generate a natural voice alert summary for this stock:
+      ${rawMessage}
+      Symbol: ${symbol}
+      `
+    }
+  ],
+});
+
+    const expandedText = completion.choices?.[0]?.message?.content || rawMessage;//if gpt fails fall back to raw message
 
     // 2) TTS -> file
     const ttsResponse = await openai.audio.speech.create({
@@ -28,6 +51,7 @@ export async function generateVoiceAlert(
       voice: "alloy",
       input: expandedText,
     });
+    
     const buffer = Buffer.from(await ttsResponse.arrayBuffer());
     fs.writeFileSync(speechFile, buffer);
 
@@ -50,10 +74,9 @@ export async function generateVoiceAlert(
     const audioUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
 
     console.log("[voiceServices] uploaded, result:", result);
-    return { text: expandedText, audioUrl };
+    return { text: expandedText, audioUrl };//saves the url in the mongodb
   } catch (error) {
-    // ensure temp file removed on error
-    try { if (fs.existsSync(speechFile)) fs.unlinkSync(speechFile); } catch {}
+     try { if (fs.existsSync(speechFile)) fs.unlinkSync(speechFile); } catch {}
     console.error("Error in generateVoiceAlert:", error);
     throw error;
   }

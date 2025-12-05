@@ -1,7 +1,7 @@
 // backend/src/services/realtime.ts
 
 import Ably from "ably";
-import type { Message } from "ably";
+import type { Message } from "ably";// type for received messages
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -42,8 +42,8 @@ export async function publish(
     });
     return;
   }
-
-  const channel = ablyClient.channels.get(channelName);
+//get the ably channel
+  const channel = ablyClient.channels.get(channelName);//give me yhe channel where I send message
 
   try {
     await channel.publish(eventName, data);
